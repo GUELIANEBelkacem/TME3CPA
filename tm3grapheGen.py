@@ -2,6 +2,9 @@ import numpy as np
 import random as rd
 import networkx as nx
 import matplotlib.pyplot as plt
+import pygraphviz
+import community as c
+
 
 class Edge:
     
@@ -37,11 +40,12 @@ class Graph:
         self.nodes = []
         for i in range(400):
             self.nodes.append(Node(i))
+        print(len(self.nodes))
         for j in range(100):
-            self.cl1.nodes.append(self.nodes[i])
-            self.cl2.nodes.append(self.nodes[i + 100])
-            self.cl3.nodes.append(self.nodes[i + 200])
-            self.cl4.nodes.append(self.nodes[i + 300])
+            self.cl1.nodes.append(self.nodes[j])
+            self.cl2.nodes.append(self.nodes[j + 100])
+            self.cl3.nodes.append(self.nodes[j + 200])
+            self.cl4.nodes.append(self.nodes[j + 300])
         # for i in range(100):
         #     for j in range(i + 1, 100, 1):
         #         rNb1 = rd.random()
@@ -58,57 +62,70 @@ class Graph:
         #             self.edges.append(Edge(self.cl4.nodes[i], self.cl4.nodes[j]))
         # for i in range(100):
             
-        def proba_add(p, n1, n2):
-            rd.seed();
+    def proba_add(self, p, n1, n2):
+            rd.seed()
             if rd.random() <= p:
-                self.edges.append(n1, n2)
+                self.edges.append(Edge(n1, n2))
             
-        def fill_intraEdge():
+    def fill_intraEdge(self):
             for i in range(100):
                 for j in range(i + 1, 100, 1):
-                    proba_add(self.p, self.cl1.nodes[i], self.cl1.nodes[j])
-                    proba_add(self.p, self.cl2.nodes[i], self.cl2.nodes[j])
-                    proba_add(self.p, self.cl3.nodes[i], self.cl3.nodes[j])
-                    proba_add(self.p, self.cl4.nodes[i], self.cl4.nodes[j])
+                    self.proba_add(self.p, self.cl1.nodes[i], self.cl1.nodes[j])
+                    self.proba_add(self.p, self.cl2.nodes[i], self.cl2.nodes[j])
+                    self.proba_add(self.p, self.cl3.nodes[i], self.cl3.nodes[j])
+                    self.proba_add(self.p, self.cl4.nodes[i], self.cl4.nodes[j])
                     
-        def add_interEdge(cluster1, cluster2):
+    def add_interEdge(self, cluster1, cluster2):
             for i in range(100):
                 for j in range(100):
-                    proba_add(self.q, cluster1.nodes[i], cluster2.nodes[j])
+                    self.proba_add(self.q, cluster1.nodes[i], cluster2.nodes[j])
                     
-        def fill_extraEdge():
-            add_interEdge(self.cl1, self.cl2)
-            add_interEdge(self.cl1, self.cl3)
-            add_interEdge(self.cl1, self.cl4)
-            add_interEdge(self.cl2, self.cl3)
-            add_interEdge(self.cl2, self.cl4)
-            add_interEdge(self.cl3, self.cl4)        
+    def fill_extraEdge(self):
+            self.add_interEdge(self.cl1, self.cl2)
+            self.add_interEdge(self.cl1, self.cl3)
+            self.add_interEdge(self.cl1, self.cl4)
+            self.add_interEdge(self.cl2, self.cl3)
+            self.add_interEdge(self.cl2, self.cl4)
+            self.add_interEdge(self.cl3, self.cl4)        
 
 
 
-        def draw_graph(self):
+    def draw_graph(self):
             G = nx.Graph()
+            clusterG1 = []
+            clusterG2 = []
+            clusterG3 = []
+            clusterG4 = []
+            pos = nx.nx_agraph.graphviz_layout(G)
             for i in range(100):
-                G.add_node(self.cl1.nodes[i].idn, {"color": "red"})
-                G.add_node(self.cl2.nodes[i].idn, {"color": "blue"})
-                G.add_node(self.cl3.nodes[i].idn, {"color": "green"})
-                G.add_node(self.cl4.nodes[i].idn, {"color": "yellow"})
+                # clusterG1.append(self.cl1.nodes[i].idn)
+                # clusterG2.append(self.cl2.nodes[i].idn)
+                # clusterG3.append(self.cl3.nodes[i].idn)
+                # clusterG4.append(self.cl4.nodes[i].idn)
+                
+                G.add_nodes_from([(self.cl1.nodes[i].idn, {"color":"red"})])
+                G.add_nodes_from([(self.cl2.nodes[i].idn, {"color":"blue"})])
+                G.add_nodes_from([(self.cl3.nodes[i].idn, {"color":"green"})])
+                G.add_nodes_from([(self.cl4.nodes[i].idn, {"color": "yellow"})])
+            graphEdges = []
             for j in self.edges:
-                G.add_edge(j.x, j.y)
-            nx.draw(G, with_labels=True, font_weight='bold')
+                graphEdges.append((j.x.idn, j.y.idn))
+            G.add_edges_from(graphEdges)
+            #nx.draw_networkx_edges(G, pos, edgelist= graphEdges)
+            nx.draw(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges, node_size = 10, font_weight='bold')
             plt.show()
 
 
+#pos = nx.nx_agraph.graphviz_layout(G, prog = 'sfdp')
 
 
 
+g = Graph(0.07, 0.0008)
 
-G = Graph(0.7, 0.2)
+g.fill_intraEdge()
+g.fill_extraEdge()
 
-G.fill_intraEdge()
-G.fill_extraEdge()
-
-G.draw_graph()
+g.draw_graph()
 
 
 
