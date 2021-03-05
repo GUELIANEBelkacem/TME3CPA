@@ -1,6 +1,7 @@
 import numpy as np
 import random as rd
-
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class Edge:
     
@@ -35,7 +36,7 @@ class Graph:
         self.cl4 = Cluster(4, [])
         self.nodes = []
         for i in range(400):
-            nodes.append(Node(i))
+            self.nodes.append(Node(i))
         for j in range(100):
             self.cl1.append(nodes[i])
             self.cl2.append(nodes[i + 100])
@@ -60,7 +61,7 @@ class Graph:
         def proba_add(p, n1, n2):
             rd.seed();
             if rd.random() <= p:
-            self.edges.append(n1, n2)
+                self.edges.append(n1, n2)
             
         def fill_intraEdge():
             for i in range(100):
@@ -82,5 +83,32 @@ class Graph:
             add_interEdge(self.cl2, self.cl3)
             add_interEdge(self.cl2, self.cl4)
             add_interEdge(self.cl3, self.cl4)        
+
+
+
+        def draw_graph(self):
+            G = nx.Graph()
+            for i in range(100):
+                G.add_node(self.cl1.nodes[i].idn, {"color": "red"})
+                G.add_node(self.cl2.nodes[i].idn, {"color": "blue"})
+                G.add_node(self.cl3.nodes[i].idn, {"color": "green"})
+                G.add_node(self.cl4.nodes[i].idn, {"color": "yellow"})
+            for j in self.edges:
+                G.add_edge(j.x, j.y)
+            nx.draw(G, with_labels=True, font_weight='bold')
+            plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
             
             
