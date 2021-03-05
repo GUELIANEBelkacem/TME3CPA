@@ -38,10 +38,10 @@ class Graph:
         for i in range(400):
             self.nodes.append(Node(i))
         for j in range(100):
-            self.cl1.append(nodes[i])
-            self.cl2.append(nodes[i + 100])
-            self.cl3.append(nodes[i + 200])
-            self.cl4.append(nodes[i + 300])
+            self.cl1.nodes.append(self.nodes[i])
+            self.cl2.nodes.append(self.nodes[i + 100])
+            self.cl3.nodes.append(self.nodes[i + 200])
+            self.cl4.nodes.append(self.nodes[i + 300])
         # for i in range(100):
         #     for j in range(i + 1, 100, 1):
         #         rNb1 = rd.random()
@@ -103,8 +103,12 @@ class Graph:
 
 
 
+G = Graph(0.7, 0.2)
 
+G.fill_intraEdge()
+G.fill_extraEdge()
 
+G.draw_graph()
 
 
 
