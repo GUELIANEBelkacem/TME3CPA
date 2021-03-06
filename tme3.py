@@ -122,6 +122,8 @@ class CommunityDetection:
                     x = self.label[self.cliques[i][0].idn]
                     for y in self.cliques[j]:
                         self.label[y.idn] = x
+                    self.cliques[i] = self.cliques[i] + self.cliques[j]
+                    self.cliques.remove(self.cliques[j])
         
             
     #finding cliques
@@ -171,7 +173,7 @@ class CommunityDetection:
                 if(self.isAdjacentn(a,b) == True): #for 2-cliques
                 #if(a.idn == b.idn):
                     count+=1
-        return (count>1)
+        return (count>4)
     
     # def louvain(self, G):
     #     i = 0
