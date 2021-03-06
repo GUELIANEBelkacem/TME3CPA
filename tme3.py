@@ -47,8 +47,7 @@ class MyIO:
         print("number of edges: " + str(self.nedges(listy)))
         print("number of nodes: " + str(self.nnodes(listy))+"\n\n")
         return listy
-    def mkadjarray(self, s):
-        l = self.readLinks(s)
+    def mkadjarray(self,l):
         listy = {}
         n = self.nnodes(l)
         for i in range(n):
@@ -75,9 +74,9 @@ class MyIO:
         temp.nextn = Node(x)
 class CommunityDetection:
     
-    def __init__(self, s):
+    def __init__(self, edges):
         io = MyIO()
-        self.listy = io.mkadjarray(s)
+        self.listy = io.mkadjarray(edges)
         self.n = len(self.listy)
         self.label = list(range(self.n))
         self.cliques = []

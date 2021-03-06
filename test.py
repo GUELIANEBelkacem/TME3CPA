@@ -1,18 +1,67 @@
 from tme3 import *
+from tm3grapheGen import *
+
+g = FourClusterGraph(0.07, 0.0008)
+cd = CommunityDetection(g.exportGraph())
+cd.labelPropagation()
+g.drawCorrectGraph()
+g.drawGraph(cd.label)
 
 
-cd = CommunityDetection("test.txt")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #cd.labelPropagation()
-cd.CPM()
+# cd.CPM()
 # n1 = Node(1)
 # P = []
 # for i in range(cd.n):
 #     P.append(cd.listy[i])
 # cd.bronKerbosch([],P , [])
 
-print(cd.label)
-print(cd.cliques)
-# print(cd.listy)
+# print(cd.label)
+# print(cd.cliques)
+# # print(cd.listy)
 
 # print(cd.isAdjacentc(cd.cliques[0], cd.cliques[1]))
 
