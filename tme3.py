@@ -171,7 +171,7 @@ class CommunityDetection:
                 if(self.isAdjacentn(a,b) == True): #for 2-cliques
                 #if(a.idn == b.idn):
                     count+=1
-        return (count>3)
+        return (count>1)
     
     # def louvain(self, G):
     #     i = 0

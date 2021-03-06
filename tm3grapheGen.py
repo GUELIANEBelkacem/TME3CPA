@@ -66,15 +66,13 @@ class FourClusterGraph:
     def proba_add(self, p, n1, n2):
             rd.seed()
             if rd.random() <= p:
-                self.edges.append(Edge(n1, n2))
+                self.edges.append(Edge(n1.idn, n2.idn))
     def exportGraph(self):
         self.fill_intraEdge()
         self.fill_extraEdge()
         
         l = []
-        for e in self.edges:
-            l.append(Edge(e[0], e[1]))
-        return l
+        return self.edges
         
     def fill_intraEdge(self):
             for i in range(100):
@@ -97,16 +95,30 @@ class FourClusterGraph:
             self.add_interEdge(self.cl2, self.cl4)
             self.add_interEdge(self.cl3, self.cl4)
             
-    def colorMapping(self):
-        commuSet = set(self.com)
+    # def colorMapping(self):
+    #     commuSet = set(self.com)
+    #     i =0
+    #     commuDict = {}
+    #     for c in commuSet:
+    #         commuDict[c] = i
+    #         i = i+100
+    #     colors = []
+    #     for comm in self.com:
+    #         colors.append(commuDict[comm])
+    #     return colors
+    
+    
+    def colorMapping(self, com):
+        commuSet = set(com)
         i =0
         commuDict = {}
         for c in commuSet:
             commuDict[c] = i
-            i = i+1
+            i = i+200
         colors = []
-        for comm in self.com:
+        for comm in com:
             colors.append(commuDict[comm])
+        print(colors)
         return colors
 
 
@@ -126,7 +138,7 @@ class FourClusterGraph:
                 color_map.append(12)
             graphEdges = []
             for j in self.edges:
-                graphEdges.append((j.x.idn, j.y.idn))
+                graphEdges.append((j.x, j.y))
             G.add_edges_from(graphEdges)
             nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = color_map, node_size = 10, font_weight='bold')
             plt.show()
@@ -136,13 +148,13 @@ class FourClusterGraph:
             G = nx.Graph()
             pos = nx.nx_agraph.graphviz_layout(G)
             for i in range(400):
-                G.add_node(self.cl1.nodes[i].idn)
+                G.add_node(self.nodes[i].idn)
             
             graphEdges = []
             for j in self.edges:
-                graphEdges.append((j.x.idn, j.y.idn))
+                graphEdges.append((j.x, j.y))
             G.add_edges_from(graphEdges)
-            nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = com, node_size = 10, font_weight='bold')
+            nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = self.colorMapping(com), node_size = 10, font_weight='bold')
             plt.show()
 
 

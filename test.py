@@ -3,8 +3,10 @@ from tm3grapheGen import *
 
 g = FourClusterGraph(0.07, 0.0008)
 cd = CommunityDetection(g.exportGraph())
-cd.labelPropagation()
-g.drawCorrectGraph()
+# cd.labelPropagation()
+cd.CPM()
+print(cd.label)
+print(set(cd.label))
 g.drawGraph(cd.label)
 
 
