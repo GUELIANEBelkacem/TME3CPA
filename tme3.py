@@ -122,7 +122,9 @@ class CommunityDetection:
                     x = self.label[self.cliques[i][0].idn]
                     for y in self.cliques[j]:
                         self.label[y.idn] = x
-                    self.cliques[i] = self.cliques[i] + self.cliques[j]
+                        if(y not in self.cliques[i]):
+                            self.cliques[i].append(y)
+                    
                     self.cliques.remove(self.cliques[j])
         
             
