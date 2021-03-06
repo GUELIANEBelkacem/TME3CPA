@@ -86,33 +86,40 @@ class Graph:
             self.add_interEdge(self.cl1, self.cl4)
             self.add_interEdge(self.cl2, self.cl3)
             self.add_interEdge(self.cl2, self.cl4)
-            self.add_interEdge(self.cl3, self.cl4)        
+            self.add_interEdge(self.cl3, self.cl4)
+            
+    def colorMapping(commus):
+        commuSet = set(commus)
+        i =0
+        commuDict = {}
+        for c in commuSet:
+            commuDict[c] = i
+            i++
+        colors = []
+        for comm in commus:
+            colors.append(commuDict[comm])
+        return colors
 
 
 
     def draw_graph(self):
             G = nx.Graph()
-            clusterG1 = []
-            clusterG2 = []
-            clusterG3 = []
-            clusterG4 = []
+            color_map = []
             pos = nx.nx_agraph.graphviz_layout(G)
             for i in range(100):
-                # clusterG1.append(self.cl1.nodes[i].idn)
-                # clusterG2.append(self.cl2.nodes[i].idn)
-                # clusterG3.append(self.cl3.nodes[i].idn)
-                # clusterG4.append(self.cl4.nodes[i].idn)
-                
-                G.add_nodes_from([(self.cl1.nodes[i].idn, {"color":"red"})])
+                G.add_nodes_from([self.cl1.nodes[i].idn], node_color = 'red')
+                color_map.append(0)
                 G.add_nodes_from([(self.cl2.nodes[i].idn, {"color":"blue"})])
+                color_map.append(4)
                 G.add_nodes_from([(self.cl3.nodes[i].idn, {"color":"green"})])
+                color_map.append(8)
                 G.add_nodes_from([(self.cl4.nodes[i].idn, {"color": "yellow"})])
+                color_map.append(12)
             graphEdges = []
             for j in self.edges:
                 graphEdges.append((j.x.idn, j.y.idn))
             G.add_edges_from(graphEdges)
-            #nx.draw_networkx_edges(G, pos, edgelist= graphEdges)
-            nx.draw(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges, node_size = 10, font_weight='bold')
+            nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = color_map, node_size = 10, font_weight='bold')
             plt.show()
 
 
