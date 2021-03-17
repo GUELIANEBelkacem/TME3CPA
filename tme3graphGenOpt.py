@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Mar 12 11:01:20 2021
+
+@author: Belkacem GUELIANE & Jae-Soo LEE
+"""
+
 import numpy as np
 import random as rd
 import networkx as nx
@@ -7,24 +14,37 @@ import community as c
 
 
 class Edge:
+    __slots__ = 'x', 'y'
     
     def __init__(self, x, y):
         self.x = x
         self.y = y
         
-class Node:
+        
     
+class Node:
+    __slots__ = 'idn', 'neighbours'
     def __init__(self, idn):
         self.idn = idn
+        self.neighbours = []
 
         
+    def copyn(self):
+        n= Node(self.idn)
+        n.neighbors = self.neighbors[:]
+        return n
+    
+    @property
+    def d(self):
+        return len(self.neighbours)
+
+       
 class Cluster:
     
     def __init__(self, idc, nodes):
         self.idc = idc
         self.nodes = []
         
-
 
 class FourClusterGraph:
     
@@ -47,32 +67,21 @@ class FourClusterGraph:
             self.cl2.nodes.append(self.nodes[j + 100])
             self.cl3.nodes.append(self.nodes[j + 200])
             self.cl4.nodes.append(self.nodes[j + 300])
-        # for i in range(100):
-        #     for j in range(i + 1, 100, 1):
-        #         rNb1 = rd.random()
-        #         rNb2 = rd.random()
-        #         rNb3 = rd.random()
-        #         rNb4 = rd.random()
-        #         if rNb1 <= p:
-        #             self.edges.append(Edge(self.cl1.nodes[i], self.cl1.nodes[j]))
-        #         if rNb2 <= p
-        #             self.edges.append(Edge(self.cl2.nodes[i], self.cl2.nodes[j]))
-        #         if rNb3 <= p
-        #             self.edges.append(Edge(self.cl3.nodes[i], self.cl3.nodes[j]))
-        #         if rNb4 <= p                    
-        #             self.edges.append(Edge(self.cl4.nodes[i], self.cl4.nodes[j]))
-        # for i in range(100):
+            
+            
             
     def proba_add(self, p, n1, n2):
             rd.seed()
             if rd.random() <= p:
-                self.edges.append(Edge(n1.idn, n2.idn))
+                self.edges.append(Edge(n1, n2))
     def exportGraph(self):
         self.fill_intraEdge()
         self.fill_extraEdge()
         
         l = []
-        return self.edges
+        for e in self.edges:
+            l.append(Edge(e[0], e[1]))
+        return l
         
     def fill_intraEdge(self):
             for i in range(100):
@@ -95,30 +104,16 @@ class FourClusterGraph:
             self.add_interEdge(self.cl2, self.cl4)
             self.add_interEdge(self.cl3, self.cl4)
             
-    # def colorMapping(self):
-    #     commuSet = set(self.com)
-    #     i =0
-    #     commuDict = {}
-    #     for c in commuSet:
-    #         commuDict[c] = i
-    #         i = i+100
-    #     colors = []
-    #     for comm in self.com:
-    #         colors.append(commuDict[comm])
-    #     return colors
-    
-    
     def colorMapping(self, com):
         commuSet = set(com)
         i =0
         commuDict = {}
         for c in commuSet:
             commuDict[c] = i
-            i = i+200
+            i = i+100
         colors = []
         for comm in com:
             colors.append(commuDict[comm])
-        print(colors)
         return colors
 
 
@@ -138,7 +133,7 @@ class FourClusterGraph:
                 color_map.append(12)
             graphEdges = []
             for j in self.edges:
-                graphEdges.append((j.x, j.y))
+                graphEdges.append((j.x.idn, j.y.idn))
             G.add_edges_from(graphEdges)
             nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = color_map, node_size = 10, font_weight='bold')
             plt.show()
@@ -148,13 +143,13 @@ class FourClusterGraph:
             G = nx.Graph()
             pos = nx.nx_agraph.graphviz_layout(G)
             for i in range(400):
-                G.add_node(self.nodes[i].idn)
+                G.add_node(self.cl1.nodes[i].idn)
             
             graphEdges = []
             for j in self.edges:
-                graphEdges.append((j.x, j.y))
+                graphEdges.append((j.x.idn, j.y.idn))
             G.add_edges_from(graphEdges)
-            nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = self.colorMapping(com), node_size = 10, font_weight='bold')
+            nx.draw_networkx(G,  pos = nx.nx_agraph.graphviz_layout(G), with_labels=False,edgelist = graphEdges,node_color = com, node_size = 10, font_weight='bold')
             plt.show()
 
 
@@ -169,4 +164,4 @@ class FourClusterGraph:
 
 
             
-            
+       
