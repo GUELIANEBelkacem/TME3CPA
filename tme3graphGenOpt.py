@@ -80,7 +80,7 @@ class FourClusterGraph:
         
         l = []
         for e in self.edges:
-            l.append(Edge(e[0], e[1]))
+            l.append(Edge(e.x.idn, e.y.idn))
         return l
         
     def fill_intraEdge(self):
@@ -142,9 +142,14 @@ class FourClusterGraph:
             self.com = com
             G = nx.Graph()
             pos = nx.nx_agraph.graphviz_layout(G)
-            for i in range(400):
+            for i in range(100):
                 G.add_node(self.cl1.nodes[i].idn)
-            
+            for i in range(100):
+                G.add_node(self.cl2.nodes[i].idn)
+            for i in range(100):
+                G.add_node(self.cl3.nodes[i].idn)
+            for i in range(100):
+                G.add_node(self.cl4.nodes[i].idn)
             graphEdges = []
             for j in self.edges:
                 graphEdges.append((j.x.idn, j.y.idn))

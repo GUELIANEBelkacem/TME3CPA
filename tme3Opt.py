@@ -280,7 +280,7 @@ class CommunityDetection:
         for a in c1:
             for b in c2:
                 if(self.isAdjacentn(a,b) == True): #for 2-cliques
-                #if(a.idn == b.idn):
+                #if(a == b):
                     count+=1
         return (count>1)
     
